@@ -25,9 +25,21 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    // collections
+    const tasks = client.db("taskDB").collection("tasks");
 
 
+    // --------------------task related api--------------------
+    app.get("/tasks", async(req, res)=>{
+      const result = await tasks.find().toArray();
+      res.send(result);
+    })
 
+    app.post("/tasks", async(req, res)=>{
+      const taskData = req.body;
+      const result = await tasks.insertOne(taskData);
+      res.send(result);
+    })
 
 
 
